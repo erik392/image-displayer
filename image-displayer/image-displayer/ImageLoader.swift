@@ -1,0 +1,24 @@
+//
+//  ImageLoader.swift
+//  image-displayer
+//
+//  Created by Erik Egers on 2025/05/19.
+//
+
+import PhotosUI
+import SwiftUI
+
+protocol ImageLoading {
+    func loadImage(from item: PhotosPickerItem) async throws -> UIImage
+}
+
+
+struct ImageLoader: ImageLoading {
+    func loadImage(from item: PhotosPickerItem) async throws -> UIImage {
+            let data = try await item.loadTransferable(type: Data.self)
+            guard let data, let image = UIImage(data: data) else {
+                throw URLError(.cannotDecodeContentData)
+            }
+            return image
+        }
+}

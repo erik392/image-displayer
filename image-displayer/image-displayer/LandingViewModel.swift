@@ -18,12 +18,19 @@ class LandingViewModel: ObservableObject {
         }
     }
     
+    private let imageLoader: ImageLoading
+    
+    init(imageLoader: ImageLoading) {
+        self.imageLoader = imageLoader
+    }
+    
     private func loadImage() {
         Task {
-            if let photosPickerItem,
-               let data = try? await photosPickerItem.loadTransferable(type: Data.self) {
-                if let image = UIImage(data: data) {
-                    selectedImage = image
+            if let photosPickerItem {
+                do {
+                    selectedImage = try await imageLoader.loadImage(from: photosPickerItem)
+                } catch {
+                    print("Image loading failed:", error)
                 }
             }
             photosPickerItem = nil

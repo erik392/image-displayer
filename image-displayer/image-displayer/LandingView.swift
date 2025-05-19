@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  LandingView.swift
 //  image-displayer
 //
 //  Created by Erik Egers on 2025/05/19.
@@ -10,7 +10,7 @@ import PhotosUI
 
 struct LandingView: View {
     
-    @ObservedObject var viewModel = LandingViewModel()
+    @ObservedObject var viewModel = LandingViewModel(imageLoader: ImageLoader())
     
     var body: some View {
         VStack {
