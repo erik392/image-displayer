@@ -11,6 +11,8 @@ import PhotosUI
 @MainActor
 class LandingViewModel: ObservableObject {
     
+    @Published var showErrorAlert: Bool = false
+    @Published var imageLoadingError: String? = nil
     @Published var selectedImage: UIImage = UIImage(named: "placeholderImage") ?? UIImage()
     @Published var photosPickerItem: PhotosPickerItem? = nil {
         didSet {
@@ -24,13 +26,18 @@ class LandingViewModel: ObservableObject {
         self.imageLoader = imageLoader
     }
     
+    func clearError() {
+        imageLoadingError = nil
+    }
+    
     private func loadImage() {
         Task {
             if let photosPickerItem {
                 do {
                     selectedImage = try await imageLoader.loadImage(from: photosPickerItem)
                 } catch {
-                    print("Image loading failed:", error)
+                    showErrorAlert = true
+                    imageLoadingError = String(format: "Image loading failed:", error.localizedDescription)
                 }
             }
             photosPickerItem = nil

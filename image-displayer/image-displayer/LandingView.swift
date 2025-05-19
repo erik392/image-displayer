@@ -28,6 +28,13 @@ struct LandingView: View {
             }
         }
         .padding()
+        .alert("Error", isPresented: $viewModel.showErrorAlert, actions: {
+            Button("OK") {
+                viewModel.clearError()
+            }
+        }, message: {
+            Text(viewModel.imageLoadingError ?? "")
+        })
     }
 }
 
