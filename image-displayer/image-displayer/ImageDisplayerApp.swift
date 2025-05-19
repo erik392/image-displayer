@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct image_displayerApp: App {
+struct ImageDisplayerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LandingView()
         }
     }
 }
