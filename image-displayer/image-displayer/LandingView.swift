@@ -10,36 +10,24 @@ import PhotosUI
 
 struct LandingView: View {
     
-    @State private var myimage: UIImage?
-    @State private var photosPickerItem: PhotosPickerItem?
+    @ObservedObject var viewModel = LandingViewModel()
     
     var body: some View {
         VStack {
-            Image(uiImage: myimage ?? UIImage(named: "placeholderImage") ?? UIImage())
+            Image(uiImage: viewModel.selectedImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 300, height: 400, alignment: .topLeading)
                 .foregroundStyle(.tint)
-            PhotosPicker(selection: $photosPickerItem, matching: .images) {
+            PhotosPicker(selection: $viewModel.photosPickerItem, matching: .images) {
                 Label("Select Image", systemImage: "photo")
-                                    .padding()
-                                    .foregroundColor(.white)
-                                    .background(Color.blue)
-                                    .cornerRadius(8)
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(Color.blue)
+                    .cornerRadius(8)
             }
         }
         .padding()
-        .onChange(of: photosPickerItem) { _, _ in
-            Task {
-                if let photosPickerItem,
-                   let data = try? await photosPickerItem.loadTransferable(type: Data.self) {
-                    if let image = UIImage(data: data) {
-                        myimage = image
-                    }
-                }
-                photosPickerItem = nil
-            }
-        }
     }
 }
 
