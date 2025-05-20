@@ -36,14 +36,16 @@ final class LandingViewModel_Tests: XCTestCase {
         mockImageLoader.shouldSucceed = true
         let expectation = XCTestExpectation(description: "Image load suceeded")
         
+        // We are testing an async function with a sync test, therefore we need to ensure we make our assertions after the property has been updated.
         let image = viewModelUnderTest.$selectedImage
-                .dropFirst()
+                .dropFirst() // Ignores the initial value
                 .sink { _ in
-                    expectation.fulfill()
+                    expectation.fulfill() //Indicates that the image loader has executed and updated values
                 }
         
         viewModelUnderTest.photosPickerItem = PhotosPickerItem(itemIdentifier: "Test")
         
+        // We give it some time, and if nothing happens after 1 second, then the test fails.
         wait(for: [expectation], timeout: 1.0)
         
         XCTAssertEqual(viewModelUnderTest.selectedImage, UIImage(systemName: "checkmark"))

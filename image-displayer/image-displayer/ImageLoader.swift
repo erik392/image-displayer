@@ -8,11 +8,14 @@
 import PhotosUI
 import SwiftUI
 
+// MARK: - Image Loading Protocol
+
 protocol ImageLoading {
     
     func loadImage(from item: PhotosPickerItem) async throws -> UIImage
 }
 
+// MARK: - Image Loading Implementation
 
 struct ImageLoader: ImageLoading {
     
