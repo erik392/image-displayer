@@ -37,7 +37,7 @@ class LandingViewModel: ObservableObject {
                     selectedImage = try await imageLoader.loadImage(from: photosPickerItem)
                 } catch {
                     showErrorAlert = true
-                    imageLoadingError = String(format: "Image loading failed:", error.localizedDescription)
+                    imageLoadingError = String(format: "Image loading failed: %@", error.localizedDescription)
                 }
             }
             photosPickerItem = nil
